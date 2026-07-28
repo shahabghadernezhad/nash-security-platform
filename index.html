@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nash Security — AI-Powered Smart City</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{overflow-x:hidden}
+body{background:#03050a;color:#eef0ff;font-family:'Inter',sans-serif;overflow-x:hidden}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:#0c0e1a}
+::-webkit-scrollbar-thumb{background:#00d4ff;border-radius:4px}
+
+/* ====== FIXED VIDEO BACKGROUND ====== */
+#bg{position:fixed;inset:0;z-index:0;overflow:hidden}
+#bg video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.8s cubic-bezier(0.4,0,0.2,1)}
+#bg video.on{opacity:1}
+#bg::after{content:'';position:absolute;inset:0;z-index:5;background:radial-gradient(ellipse at center,transparent 30%,rgba(3,5,10,0.85) 100%);pointer-events:none}
+#bg .scan{position:absolute;inset:0;z-index:6;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.03) 3px,rgba(0,0,0,0.03) 4px)}
+
+/* ====== CONTENT SECTIONS ====== */
+.sec{position:relative;z-index:10;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:3rem 2rem}
+.sec .box{max-width:650px;width:100%;text-align:center;padding:2.5rem 2rem;border-radius:16px;background:rgba(3,5,10,0.45);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.03)}
+.tag{display:inline-flex;align-items:center;gap:6px;background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.1);color:#00d4ff;padding:0.3rem 1rem;border-radius:100px;font-size:0.65rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;font-weight:600}
+.tag i{width:5px;height:5px;border-radius:50%;background:#00d4ff;box-shadow:0 0 6px #00d4ff}
+.sec h2{font-size:clamp(1.8rem,4vw,3rem);font-weight:800;line-height:1.05;letter-spacing:-0.5px;margin-bottom:0.8rem}
+.sec h2 em{font-style:normal;color:#00d4ff}
+.sec p{color:rgba(255,255,255,0.45);line-height:1.8;font-size:0.9rem;max-width:480px;margin:0 auto}
+.btn{display:inline-flex;align-items:center;gap:6px;margin-top:1.2rem;padding:0.7rem 2rem;border:1px solid rgba(0,212,255,0.15);color:#00d4ff;background:rgba(0,0,0,0.3);backdrop-filter:blur(8px);font-size:0.65rem;letter-spacing:3px;text-transform:uppercase;text-decoration:none;border-radius:6px;transition:all .3s;cursor:pointer;font-weight:600}
+.btn:hover{background:#00d4ff;color:#03050a;border-color:#00d4ff}
+.btn-solid{background:#00d4ff;color:#03050a;border:none}
+.btn-solid:hover{background:#00bde6}
+.stats{display:flex;gap:2.5rem;justify-content:center;margin-top:1.5rem;flex-wrap:wrap}
+.stat{text-align:center}
+.stat .num{font-size:2rem;font-weight:800;color:#00d4ff}
+.stat .lbl{font-size:0.55rem;color:rgba(255,255,255,0.3);letter-spacing:2px;text-transform:uppercase;margin-top:2px}
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0.8rem;margin-top:1.5rem;text-align:left}
+.feat{background:rgba(0,0,0,0.25);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.03);border-radius:10px;padding:1rem;transition:all .3s}
+.feat:hover{border-color:rgba(0,212,255,0.15);transform:translateY(-2px)}
+.feat .ico{font-size:1.3rem;margin-bottom:0.4rem}
+.feat h4{font-size:0.75rem;font-weight:700;margin-bottom:0.2rem}
+.feat span{font-size:0.6rem;color:rgba(255,255,255,0.35);line-height:1.5}
+.product-list{display:flex;flex-direction:column;gap:0.6rem;margin-top:1.2rem;text-align:left}
+.product-item{display:flex;align-items:center;gap:0.8rem;background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.02);border-radius:8px;padding:0.8rem 1rem;transition:all .3s}
+.product-item:hover{border-color:rgba(0,212,255,0.1)}
+.product-item .pi-icon{font-size:1.2rem;width:36px;text-align:center}
+.product-item .pi-name{font-size:0.8rem;font-weight:600}
+.product-item .pi-desc{font-size:0.6rem;color:rgba(255,255,255,0.35)}
+
+/* ====== HERO ====== */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.hero h1{font-size:clamp(3.5rem,12vw,9rem);font-weight:900;letter-spacing:-4px;line-height:0.85;background:linear-gradient(180deg,#fff 0%,#00d4ff 50%,#0066ff 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{color:rgba(255,255,255,0.25);font-size:clamp(0.7rem,1.3vw,0.9rem);letter-spacing:6px;text-transform:uppercase;margin-top:1.5rem}
+.hero-line{width:60px;height:2px;background:linear-gradient(90deg,transparent,#00d4ff,transparent);margin:1.5rem auto}
+.scroll-cue{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px}
+.scroll-cue span{font-size:0.45rem;letter-spacing:5px;color:rgba(255,255,255,0.15);text-transform:uppercase}
+.scroll-cue .arrow{width:12px;height:12px;border-right:1.5px solid rgba(0,212,255,0.3);border-bottom:1.5px solid rgba(0,212,255,0.3);transform:rotate(45deg);animation:bounce 1.5s infinite}
+@keyframes bounce{0%,100%{transform:rotate(45deg) translateY(0);opacity:.2}50%{transform:rotate(45deg) translateY(6px);opacity:.8}}
+
+/* ====== NAV DOTS ====== */
+.dots{position:fixed;right:1.5rem;top:50%;transform:translateY(-50%);z-index:100;display:flex;flex-direction:column;gap:8px}
+.dot{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,0.12);transition:all .4s}
+.dot.a{background:#00d4ff;box-shadow:0 0 10px #00d4ff;transform:scale(2)}
+
+/* ====== SECTION LABELS ====== */
+.sec-label{position:fixed;left:1.5rem;bottom:2rem;z-index:100;font-size:0.5rem;letter-spacing:3px;color:rgba(255,255,255,0.1);text-transform:uppercase;transition:all .3s}
+
+/* ====== FOOTER ====== */
+footer{position:relative;z-index:10;border-top:1px solid rgba(0,212,255,0.05);background:rgba(3,5,10,0.8);backdrop-filter:blur(20px);padding:3rem 2rem;text-align:center}
+footer .logo{font-size:1.5rem;font-weight:900;color:#00d4ff;letter-spacing:3px}
+footer .tagline{font-size:0.6rem;color:rgba(255,255,255,0.2);letter-spacing:4px;text-transform:uppercase;margin-top:0.5rem}
+footer .links{display:flex;justify-content:center;gap:2rem;margin-top:1.5rem;flex-wrap:wrap}
+footer .links a{font-size:0.7rem;color:rgba(255,255,255,0.3);text-decoration:none;transition:color .2s}
+footer .links a:hover{color:#00d4ff}
+footer .copy{font-size:0.5rem;color:rgba(255,255,255,0.1);margin-top:1.5rem}
+
+@media(max-width:768px){
+  .feat-grid{grid-template-columns:1fr}
+  .stats{gap:1.5rem}
+  .stat .num{font-size:1.6rem}
+  .sec .box{padding:2rem 1.2rem}
+  .dots{right:0.8rem}
+  .sec-label{left:0.8rem;bottom:1rem;font-size:0.4rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ====== CINEMATIC VIDEO BACKGROUND ====== -->
+<div id="bg">
+  <video autoplay muted loop playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+    <source src="media/nash_cinematic.mp4" type="video/mp4">
+  </video>
+  <div class="scan"></div>
+</div>
+
+<!-- ====== NAV DOTS ====== -->
+<div class="dots" id="dots"></div>
+<div class="sec-label" id="secLabel">01 — FUTURE CITY</div>
+
+<!-- ====== SECTIONS ====== -->
+<section class="sec hero" data-ch="0" data-name="Future City">
+  <div>
+    <h1>NASH<br>SECURITY</h1>
+    <p class="hero-sub">Protecting Tomorrow with AI</p>
+    <div class="hero-line"></div>
+  </div>
+  <div class="scroll-cue"><span>Scroll to Enter</span><div class="arrow"></div></div>
+</section>
+
+<section class="sec" data-ch="1" data-name="Security Center">
+  <div class="box">
+    <div class="tag"><i></i>Enter Building</div>
+    <h2>NashSecurity <em>AI Center</em></h2>
+    <p>Welcome to our state-of-the-art security facility. Browse our products, explore our AI software, and discover how we protect the future.</p>
+    <a href="#products" class="btn">Explore Products →</a>
+  </div>
+</section>
+
+<section class="sec" data-ch="2" data-name="Products">
+  <div class="box">
+    <div class="tag"><i></i>Products</div>
+    <h2>Security <em>Equipment</em></h2>
+    <div class="product-list">
+      <div class="product-item"><div class="pi-icon">📹</div><div><div class="pi-name">CCTV Cameras</div><div class="pi-desc">4K HDR · Night vision · AI detection</div></div></div>
+      <div class="product-item"><div class="pi-icon">🔐</div><div><div class="pi-name">Smart Access Control</div><div class="pi-desc">Biometric · RFID · Face recognition</div></div></div>
+      <div class="product-item"><div class="pi-icon">🚨</div><div><div class="pi-name">Alarm Systems</div><div class="pi-desc">Instant alerts · Mobile notification</div></div></div>
+      <div class="product-item"><div class="pi-icon">🔥</div><div><div class="pi-name">Fire Detection</div><div class="pi-desc">AI-powered smoke & heat sensors</div></div></div>
+      <div class="product-item"><div class="pi-icon">🧠</div><div><div class="pi-name">AI Analytics</div><div class="pi-desc">Real-time processing · Edge computing</div></div></div>
+      <div class="product-item"><div class="pi-icon">💾</div><div><div class="pi-name">NVR / DVR</div><div class="pi-desc">Cloud storage · 30-day retention</div></div></div>
+      <div class="product-item"><div class="pi-icon">☁️</div><div><div class="pi-name">Cloud Security</div><div class="pi-desc">Remote access · Encrypted data</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" data-ch="3" data-name="Software">
+  <div class="box">
+    <div class="tag"><i></i>AI Software</div>
+    <h2>Intelligent <em>Dashboard</em></h2>
+    <p>Real-time monitoring, facial recognition, anomaly detection — all from one powerful control room.</p>
+    <div class="stats">
+      <div class="stat"><div class="num" data-count="500">0</div><div class="lbl">AI Cameras</div></div>
+      <div class="stat"><div class="num" data-count="99.97">0</div><div class="lbl">Accuracy</div></div>
+      <div class="stat"><div class="num" data-count="12">0</div><div class="lbl">ms Response</div></div>
+    </div>
+    <a href="#" class="btn">View Dashboard →</a>
+  </div>
+</section>
+
+<section class="sec" data-ch="4" data-name="License">
+  <div class="box">
+    <div class="tag"><i></i>License</div>
+    <h2>Activate Your <em>Software</em></h2>
+    <p>Enter your license key to activate your Nash Security software. Manage devices, check expiry, and download updates.</p>
+    <div style="margin-top:1.2rem;display:flex;gap:0.5rem;justify-content:center">
+      <input type="text" placeholder="NASH-XXXX-XXXX-XXXX-XXXX" style="max-width:300px;font-family:monospace;font-size:0.85rem;letter-spacing:1px;text-align:center">
+      <button class="btn btn-solid" style="margin-top:0">Activate</button>
+    </div>
+    <p style="margin-top:1rem;font-size:0.7rem">Don't have a license? <a href="#" style="color:#00d4ff">Purchase now →</a></p>
+  </div>
+</section>
+
+<section class="sec" data-ch="5" data-name="Services">
+  <div class="box">
+    <div class="tag"><i></i>Services</div>
+    <h2>Professional <em>Services</em></h2>
+    <p>From installation to 24/7 monitoring — we handle everything so you don't have to.</p>
+    <div class="feat-grid">
+      <div class="feat"><div class="ico">🔧</div><h4>Installation</h4><span>Expert setup</span></div>
+      <div class="feat"><div class="ico">📞</div><h4>Support</h4><span>24/7 hotline</span></div>
+      <div class="feat"><div class="ico">🛠️</div><h4>Maintenance</h4><span>Regular checks</span></div>
+      <div class="feat"><div class="ico">👁️</div><h4>Monitoring</h4><span>Live surveillance</span></div>
+      <div class="feat"><div class="ico">🌐</div><h4>Network</h4><span>Secure infrastructure</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" data-ch="6" data-name="Download">
+  <div class="box">
+    <div class="tag"><i></i>Download</div>
+    <h2>Get the <em>Software</em></h2>
+    <p>Available on all platforms. Download, install, and activate with your license key.</p>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1.5rem">
+      <div class="feat" style="text-align:center"><div class="ico">🪟</div><h4>Windows</h4><span>v3.2</span></div>
+      <div class="feat" style="text-align:center"><div class="ico">🤖</div><h4>Android</h4><span>v2.1</span></div>
+      <div class="feat" style="text-align:center"><div class="ico">🍎</div><h4>iOS</h4><span>v2.0</span></div>
+      <div class="feat" style="text-align:center"><div class="ico">🐧</div><h4>Linux</h4><span>v3.1</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" data-ch="7" data-name="Blog">
+  <div class="box">
+    <div class="tag"><i></i>Blog</div>
+    <h2>NashSecurity <em>Blog</em></h2>
+    <p>Stay updated with the latest in AI security, smart city technology, and surveillance innovation.</p>
+    <div class="feat-grid">
+      <div class="feat"><div class="ico">🏙️</div><h4>Smart Cities</h4><span>Future of urban security</span></div>
+      <div class="feat"><div class="ico">🤖</div><h4>AI Technology</h4><span>Machine learning insights</span></div>
+      <div class="feat"><div class="ico">🔒</div><h4>Cybersecurity</h4><span>Digital protection tips</span></div>
+      <div class="feat"><div class="ico">📹</div><h4>Surveillance</h4><span>Camera innovations</span></div>
+    </div>
+    <a href="#" class="btn" style="margin-top:1rem">Read Blog →</a>
+  </div>
+</section>
+
+<section class="sec" data-ch="8" data-name="About Us">
+  <div class="box">
+    <div class="tag"><i></i>About Us</div>
+    <h2>Who We <em>Are</em></h2>
+    <p>Nash Security is a leading provider of AI-powered surveillance and smart city solutions, protecting communities across the globe with cutting-edge technology.</p>
+    <div class="stats">
+      <div class="stat"><div class="num">5+</div><div class="lbl">Years Experience</div></div>
+      <div class="stat"><div class="num">500+</div><div class="lbl">Installations</div></div>
+      <div class="stat"><div class="num">50+</div><div class="lbl">Cities Protected</div></div>
+    </div>
+    <a href="#" class="btn" style="margin-top:1rem">Learn More →</a>
+  </div>
+</section>
+
+<section class="sec" data-ch="9" data-name="Contact">
+  <div class="box">
+    <div class="tag"><i></i>Contact Us</div>
+    <h2>Get In <em>Touch</em></h2>
+    <p>Ready to secure your future? Contact us for a free consultation.</p>
+    <div style="margin-top:1.5rem;text-align:left;max-width:350px;margin-left:auto;margin-right:auto">
+      <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:1rem">
+        <span style="font-size:1.2rem">📱</span>
+        <div><div style="font-size:0.8rem;font-weight:600">+98 919 307 8343</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.3)">Mobile</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:1rem">
+        <span style="font-size:1.2rem">☎️</span>
+        <div><div style="font-size:0.8rem;font-weight:600">+98 21 4465 6094</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.3)">Office</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:1rem">
+        <span style="font-size:1.2rem">✉️</span>
+        <div><div style="font-size:0.8rem;font-weight:600">shahabghadernezhad@gmail.com</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.3)">Email</div></div>
+      </div>
+    </div>
+    <a href="#" class="btn btn-solid">Send Message →</a>
+  </div>
+</section>
+
+<!-- ====== FOOTER ====== -->
+<footer>
+  <div class="logo">NASH SECURITY</div>
+  <div class="tagline">Protecting Tomorrow with AI</div>
+  <div class="links">
+    <a href="#">Products</a>
+    <a href="#">Software</a>
+    <a href="#">Blog</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+  </div>
+  <div class="copy">© 2026 Nash Security. All rights reserved.</div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+<script>
+(function(){
+  const lenis=new Lenis({duration:1.2,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)),smoothWheel:true});
+  lenis.on('scroll',ScrollTrigger.update);
+  gsap.ticker.add(t=>lenis.raf(t*1000));
+  gsap.ticker.lagSmoothing(0);
+
+  // Mobile: use 360p
+  const isMob=window.innerWidth<768;
+  const vid=isMob?'360':'720';
+  document.querySelectorAll('#bg video source').forEach(s=>{
+    s.src=s.src.replace('720.mp4',vid+'.mp4');
+  });
+
+  const vids=document.querySelectorAll('#bg video');
+  const sections=document.querySelectorAll('.sec');
+  const dotsContainer=document.getElementById('dots');
+  const secLabel=document.getElementById('secLabel');
+  const names=Array.from(sections).map(s=>s.dataset.name||'');
+
+  // Create dots
+  sections.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='dot'+(i===0?' a':'');
+    dotsContainer.appendChild(d);
+  });
+  const dots=dotsContainer.querySelectorAll('.dot');
+
+  // Section names for labels
+  const labels=names.map((n,i)=>`${String(i+1).padStart(2,'0')} — ${n.toUpperCase()}`);
+
+  let activeIdx=0;
+  let transitioning=false;
+
+  function showVid(idx){
+    if(idx===activeIdx||transitioning) return;
+    transitioning=true;
+    const prev=vids[activeIdx];
+    const next=vids[idx];
+
+    // Pre-start next video
+    next.play().catch(()=>{});
+    // Crossfade
+    next.classList.add('on');
+    prev.classList.remove('on');
+
+    // Update dots and label
+    dots.forEach((d,i)=>d.classList.toggle('a',i===idx));
+    secLabel.textContent=labels[idx]||'';
+
+    setTimeout(()=>{
+      prev.pause();
+      prev.currentTime=0;
+      activeIdx=idx;
+      transitioning=false;
+    },2000);
+  }
+
+  lenis.on('scroll',e=>{
+    const p=e.progress;
+    const total=sections.length;
+    const raw=p*total;
+    const idx=Math.min(total-1,Math.floor(raw));
+
+    showVid(idx);
+
+    // Hero fade
+    const hero=document.querySelector('.hero');
+    if(hero){
+      hero.style.opacity=Math.max(0,1-p*5);
+      hero.style.transform=`translateY(${p*50}px)`;
+    }
+  });
+
+  // Preload first 3 videos
+  vids.forEach((v,i)=>{
+    if(i<3)v.play().catch(()=>{});
+  });
+
+  // GSAP reveals
+  sections.forEach(sec=>{
+    const box=sec.querySelector('.box');
+    if(box){
+      gsap.from(box,{y:50,opacity:0,duration:0.8,ease:'power3.out',scrollTrigger:{trigger:sec,start:'top 75%'}});
+    }
+  });
+
+  // Counter animation
+  gsap.utils.toArray('[data-count]').forEach(el=>{
+    const val=parseFloat(el.dataset.count);
+    ScrollTrigger.create({trigger:el,start:'top 80%',once:true,onEnter:()=>{
+      gsap.to(el,{innerText:val,duration:2.5,snap:val%1?{innerText:0.01}:{innerText:1},onUpdate:function(){
+        el.innerText=val%1?parseFloat(el.innerText).toFixed(2):el.innerText;
+      }});
+    }});
+  });
+})();
+</script>
+</body>
+</html>
